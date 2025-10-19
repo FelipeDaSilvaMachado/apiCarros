@@ -31,10 +31,11 @@ export const styles = StyleSheet.create({
   floatingButton: {
     position: 'absolute',
     bottom: 20,
-    alignSelf: 'center',
+    alignSelf: 'flex-end',
     backgroundColor: '#27ae60',
     width: 60,
     height: 60,
+    margin: 20,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

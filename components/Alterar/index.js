@@ -52,7 +52,12 @@ export default function Alterar({ route, navigation }) {
         value={String(form.cor || '')}
         onChangeText={(value) => handleChange('cor', value)}
       />
-
+      <TextInput
+        style={styles.input}
+        placeholder="Descrição"
+        value={String(form.descricao || '')}
+        onChangeText={(value) => handleChange('descricao', value)}
+      />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Salvar Alterações</Text>
       </TouchableOpacity>

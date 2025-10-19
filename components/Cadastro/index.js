@@ -10,6 +10,7 @@ export default function Cadastro({ navigation }) {
     modelo: '',
     ano: '',
     cor: '',
+    descricao: '',
   });
 
   const handleChange = (field, value) => {
@@ -57,6 +58,12 @@ export default function Cadastro({ navigation }) {
         placeholder="Cor"
         value={String(form.cor || '')}
         onChangeText={(value) => handleChange('cor', value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Descrição"
+        value={String(form.descricao || '')}
+        onChangeText={(value) => handleChange('descricao', value)}
       />
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Cadastrar</Text>
