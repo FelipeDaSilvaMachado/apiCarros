@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styles } from './style.js';
 import { View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
-import { createVeiculo } from '../Api/';
+import { createAutomovel } from '../Api/';
 
 export default function Cadastro({ navigation }) {
   const [form, setForm] = useState({
@@ -22,8 +22,18 @@ export default function Cadastro({ navigation }) {
       Alert.alert('Erro', 'Preencha o Nome e a Marca.');
       return;
     }
-    await createVeiculo(form);
-    navigation.navigate('Home');
+
+    if (form.ano && isNaN(Number(form.ano))) {
+      Alert.alert('Erro', 'Ano deve ser um número válido.');
+      return;
+    }
+
+    try{
+      await createAutomovel(form);
+      navigation.navigate('Home');
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível cadastrar o automóvel. Tente novamente.');
+    }
   };
 
   return (

@@ -2,41 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { styles } from './style.js';
 import { View, Alert, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Text, IconButton } from 'react-native-paper';
-import { fetchVeiculo, deleteVeiculo } from '../../components/Api';
+import { fetchAutomoveis, deleteAutomovel } from '../../components/Api/index.js';
 
 export default function Home({ navigation }) {
-  const [registro, setRegistros] = useState([]);
+  const [registros, setRegistros] = useState([]);
 
   useEffect(() => {
-    fetchVeiculo(setRegistros);
-  }, []);
+    fetchAutomoveis(setRegistros);
+  }, [navigation]);
 
   const handleDelete = (id) => {
     Alert.alert(
       'Confirmação',
       'Tem certeza de que deseja deletar este item?',
       [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Deletar', onPress: () => deleteVeiculo(id, setRegistros) },
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Deletar',
+          onPress: async () => {
+            try {
+              await deleteAutomovel(id);
+              const novosRegistros = await fetchAutomoveis();
+              setRegistros(novosRegistros);
+            } catch (error) {
+              Alert.alert('Erro', 'Não foi possível deletar o veículo.');
+            }
+          }
+        },
       ]
     );
   };
-  // const registros = [
-  //   {
-  //     id: 1,
-  //     nome: 'XC60',
-  //     marca: 'Volvo',
-  //     modelo: 'SUV',
-  //     ano: 2026,
-  //     cor: 'Branca',
-  //     descricao: 'SUV de elegancia, seguranca e conforto, o volvo XC60 de motor 2.0 é um carro exemplar para a família',
-  //   },
-  // ];
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={registro}
+        data={registros}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Card style={styles.card}>
@@ -57,7 +60,7 @@ export default function Home({ navigation }) {
                   icon="pencil"
                   size={24}
                   iconColor="#3498db"
-                  onPress={() => navigation.navigate('Alterar', { veiculo: item })}
+                  onPress={() => navigation.navigate('Alterar', { automovel: item })}
                 />
                 <IconButton
                   icon="delete"

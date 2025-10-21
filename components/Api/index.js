@@ -1,29 +1,31 @@
 import { Alert } from 'react-native';
-const API_URL = 'https://apiautomoveis.webapptech.site/api';
- 
-export const fetchVeiculo = async (setRegistros) => {
+const API_URL1 = 'https://apiautomoveis.webapptech.site/api/';
+const API_URL = 'https://apiautomoveis.webapptech.site/api/automoveis/';
+
+export const fetchAutomoveis = async (setRegistros) => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL1);
     if (!response.ok) {
-      throw new Error('Erro ao buscar o veiculo');
+      throw new Error('Erro ao buscar os automóveis');
     }
     const data = await response.json();
-    console.log('Veiculos recebidos da API:', data);
-    setRegistros(data.data);
+    console.log('Automóveis recebidos da API:', data);
+    // setRegistros(data.data);
+    return data.data || data;
   } catch (error) {
-    console.error('Erro ao buscar o veiculo:', error);
+    console.error('Erro ao buscar o automóvel:', error);
     throw error;
   }
 };
- 
-export const createVeiculo = async (veiculoData) => {
+
+export const createAutomovel = async (automovelData) => {
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(veiculoData),
+      body: JSON.stringify(automovelData),
     });
  
     // Verifica se a API retornou status 204 (sem conteúdo)
@@ -48,15 +50,15 @@ export const createVeiculo = async (veiculoData) => {
     }
     return responseData;
   } catch (error) {
-    console.error('Erro ao cadastrar o veiculo:', error.message);
+    console.error('Erro ao cadastrar o automóvel:', error.message);
     Alert.alert('Erro ao cadastrar', `Detalhes: ${error.message}`);
     return null;
   }
 };
- 
-export const deleteVeiculo = async (veiculoId, setRegistros) => {
+
+export const deleteAutomovel = async (automovelId, setRegistros) => {
   try {
-    const response = await fetch(`${API_URL}${veiculoId}`, {
+    const response = await fetch(`${API_URL}${automovelId}`, {
       method: 'DELETE',
     });
 
@@ -68,9 +70,9 @@ export const deleteVeiculo = async (veiculoId, setRegistros) => {
         // Atualiza a lista localmente
         setRegistros((prevRegistros) => {
           const novaLista = prevRegistros.filter(
-            (veiculos) => veiculos.codigo !== veiculoId
+            (automovel) => automovel.codigo !== automovelId
           );
-          console.log('Nova lista de veiculos:', novaLista);
+          console.log('Nova lista de automóveis:', novaLista);
           return novaLista;
         });
       } else {
@@ -87,18 +89,18 @@ export const deleteVeiculo = async (veiculoId, setRegistros) => {
         responseData = null;
       }
       throw new Error(
-        responseData?.message || 'Erro desconhecido ao excluir o Veiculo'
+        responseData?.message || 'Erro desconhecido ao excluir o automóvel'
       );
     }
   } catch (error) {
-    console.error('Erro ao excluir veiculo:', error.message);
+    console.error('Erro ao excluir automóvel:', error.message);
     Alert.alert('Erro ao excluir', `Detalhes: ${error.message}`);
   }
 };
- 
-export const updateVeiculo = async (veiculoId, updatedData, navigation) => {
+
+export const updateAutomovel = async (automovelId, updatedData, navigation) => {
   try {
-    const response = await fetch(`${API_URL}${veiculoId}`, {
+    const response = await fetch(`${API_URL}${automovelId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +109,7 @@ export const updateVeiculo = async (veiculoId, updatedData, navigation) => {
     });
     console.log('Dados enviados:', updatedData);
     if (response.status === 200) {
-      Alert.alert('Sucesso!', 'Veiculo atualizado com sucesso!');
+      Alert.alert('Sucesso!', 'Automóvel atualizado com sucesso!');
       navigation.navigate('Home');
     } else {
       const textResponse = await response.text();
@@ -119,11 +121,11 @@ export const updateVeiculo = async (veiculoId, updatedData, navigation) => {
         responseData = null;
       }
       throw new Error(
-        responseData?.message || 'Erro desconhecido ao atualizar o Veiculo'
+        responseData?.message || 'Erro desconhecido ao atualizar o automóvel'
       );
     }
   } catch (error) {
-    console.error('Erro ao atualizar o veiculo:', error.message);
+    console.error('Erro ao atualizar o automóvel:', error.message);
     Alert.alert('Erro ao atualizar', `Detalhes: ${error.message}`);
   }
 };

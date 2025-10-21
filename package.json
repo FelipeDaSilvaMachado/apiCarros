@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@react-navigation/native": "^7.1.18",
-    "@react-navigation/stack": "^7.4.9",
+    "@react-navigation/stack": "^7.4.10",
+    "adb": "^0.2.0",
     "expo": "~54.0.12",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
     "react-native": "0.81.4",
     "react-native-paper": "^5.14.5",
     "react-native-safe-area-context": "^5.6.1",
+    "serve": "^14.2.5",
     "yet": "^0.1.0"
   },
   "private": true
