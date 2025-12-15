@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styles } from './style.js';
 import { View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
-import { updateVeiculo } from '../Api';
+import { updateVeiculo } from '../Api/index';
 
 export default function Alterar({ route, navigation }) {
   const { veiculo } = route.params;

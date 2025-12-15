@@ -13,6 +13,18 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 12,
   },
+  viewPicker: {
+    width: '100%',
+    border: 1,
+    borderColor: '#000',
+    marginBottom: 5,
+    borderRadius: 6,
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 6,
+  },
   button: {
     backgroundColor: '#27ae60',
     padding: 14,

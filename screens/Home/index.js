@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styles } from './style.js';
 import { View, Alert, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Text, IconButton } from 'react-native-paper';
-import { fetchVeiculo, deleteVeiculo } from '../../components/Api';
+import { fetchVeiculo, deleteVeiculo } from '../../components/Api/index';
 
 export default function Home({ navigation }) {
   const [registro, setRegistros] = useState([]);
@@ -21,17 +21,6 @@ export default function Home({ navigation }) {
       ]
     );
   };
-  // const registros = [
-  //   {
-  //     id: 1,
-  //     nome: 'XC60',
-  //     marca: 'Volvo',
-  //     modelo: 'SUV',
-  //     ano: 2026,
-  //     cor: 'Branca',
-  //     descricao: 'SUV de elegancia, seguranca e conforto, o volvo XC60 de motor 2.0 é um carro exemplar para a família',
-  //   },
-  // ];
 
   return (
     <View style={styles.container}>
