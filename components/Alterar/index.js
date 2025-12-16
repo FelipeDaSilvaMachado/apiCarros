@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { styles } from './style.js';
 import { View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import { updateVeiculo } from '../Api/index';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Alterar({ route, navigation }) {
-  const { veiculo } = route.params;
-  const [form, setForm] = useState({ ...veiculo });
+  const { automovel } = route.params;
+  const [form, setForm] = useState({ ...automovel });
 
   const handleChange = (field, value) => {
     setForm({ ...form, [field]: value });
@@ -33,12 +34,23 @@ export default function Alterar({ route, navigation }) {
         value={String(form.marca || '')}
         onChangeText={(value) => handleChange('marca', value)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Modelo"
-        value={String(form.modelo || '')}
-        onChangeText={(value) => handleChange('modelo', value)}
-      />
+      <View
+        style={styles.viewPicker}
+      >
+        <Picker
+          style={styles.picker}
+          selectedValue={form.modelo}
+          onValueChange={(itemValue) => handleChange('modelo', itemValue)}
+        >
+          <Picker.Item label="Selecione..." value="selecione" />
+          <Picker.Item label="Hatch" value="Hatch" />
+          <Picker.Item label="Sedan" value="Sedan" />
+          <Picker.Item label="SUV" value="SUV" />
+          <Picker.Item label="Picape" value="Picape" />
+          <Picker.Item label="Minivan" value="Minivan" />
+          <Picker.Item label="Esportivo" value="Esportivo" />
+        </Picker>
+      </View>
       <TextInput
         style={styles.input}
         placeholder="Ano"
@@ -58,7 +70,11 @@ export default function Alterar({ route, navigation }) {
         value={String(form.descricao || '')}
         onChangeText={(value) => handleChange('descricao', value)}
       />
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={async () => {
+        await handleSubmit();
+        navigation.navigate('Home');
+      }}
+      >
         <Text style={styles.buttonText}>Salvar Alterações</Text>
       </TouchableOpacity>
     </View>

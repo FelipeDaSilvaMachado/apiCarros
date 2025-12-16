@@ -23,4 +23,16 @@ export const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  viewPicker: {
+    width: '100%',
+    border: 1,
+    borderColor: '#000',
+    marginBottom: 5,
+    borderRadius: 6,
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 6,
+  },
 });

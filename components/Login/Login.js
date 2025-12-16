@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../Api/Firebase';
 import { styles } from '../Cadastro/style';
@@ -10,13 +10,14 @@ const Login = ({ navigation }) => {
     const [erro, setErro] = useState('');
 
     const handleLogin = async () => {
-        if (!email || !senha) {
+        if (!email.trim() || !senha.trim()) {
             setErro('Preencha email e senha!');
             return;
         }
 
         try {
             await signInWithEmailAndPassword(auth, email, senha);
+            navigation.navigate('Perfil');
         } catch (err) {
             console.log('Erro de login', err.code, err.message);
             let errorMessage = 'Erro ao fazer login!';
@@ -74,17 +75,18 @@ const Login = ({ navigation }) => {
             >
                 <View
                     style={styles.viewInternaBotao}
-                    >
+                >
                     <Button
                         style={stylesLogin.button}
                         title='Logar'
-                        onPress={async () => {
+                        onPress={async() => {
                             await handleLogin();
-                            navigation.navigate('Perfil');
                         }}
-                        />
+                    />
                 </View>
-                <View>
+                <View
+                    style={styles.viewInternaBotao}
+                >
                     <Button
                         style={stylesLogin.button}
                         title='Cadastrar Usuário'
@@ -110,6 +112,7 @@ const stylesLogin = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        paddingHorizontal: 20,
     },
 
     input: {
@@ -130,22 +133,18 @@ const stylesLogin = StyleSheet.create({
 
     button: {
         flex: 1,
-        margin: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 
     viewButton: {
-        margin: 5,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        width: '100%',
+        width: '80%',
     },
 
     viewInternaBotao: {
-        marginRight: 3,
-        width: '100%',
+        flex: 1,
+        marginHorizontal: 8,
     },
 });
 

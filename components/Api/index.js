@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 // const API_URL = 'https://apiautomoveis.webapptech.site/api';
 // const API_URL = 'http://192.168.18.11:8000/api';
-const API_URL = 'https://nondistorted-chris-acquiescently.ngrok-free.dev/api';
+const API_URL = 'https://nondistorted-chris-acquiescently.ngrok-free.dev/api/automoveis';
 
 export const fetchVeiculo = async (setRegistros) => {
   try {
@@ -15,25 +15,37 @@ export const fetchVeiculo = async (setRegistros) => {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error('Erro ao buscar o veiculo');
+      throw new Error(`Erro HTTP ${response.status}`);
     }
     const data = await response.json();
     console.log('Veiculos recebidos da API:', data);
-    setRegistros(data.data);
+
+    if (data.sucesso && data.dados) {
+      setRegistros(data.data);
+    } else if (Array.isArray(data)) {
+      setRegistros(data); // Se API retorna array direto
+    } else if (data.data && Array.isArray(data.data)) {
+      setRegistros(data.data); // Se API retorna {data: [...]}
+    } else if (data.veiculos) {
+      setRegistros(data.veiculos); // Se API retorna {veiculos: [...]}
+    } else {
+      console.warn('Estrutura desconhecida. Dados:', data);
+      setRegistros([]); // Define vazio se não reconhecer
+    }
   } catch (error) {
     console.error('Erro ao buscar o veiculo:', error);
     throw error;
   }
 };
 
-export const createVeiculo = async (veiculoData) => {
+export const createVeiculo = async (automoveisData) => {
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(veiculoData),
+      body: JSON.stringify(automoveisData),
     });
 
     // Verifica se a API retornou status 204 (sem conteúdo)
@@ -64,9 +76,9 @@ export const createVeiculo = async (veiculoData) => {
   }
 };
 
-export const deleteVeiculo = async (veiculoId, setRegistros) => {
+export const deleteVeiculo = async (automovelId, setRegistros) => {
   try {
-    const response = await fetch(`${API_URL}${veiculoId}`, {
+    const response = await fetch(`${API_URL}${automovelId}`, {
       method: 'DELETE',
     });
 
@@ -78,7 +90,7 @@ export const deleteVeiculo = async (veiculoId, setRegistros) => {
         // Atualiza a lista localmente
         setRegistros((prevRegistros) => {
           const novaLista = prevRegistros.filter(
-            (veiculos) => veiculos.codigo !== veiculoId
+            (automoveis) => automoveis.codigo !== automovelId
           );
           console.log('Nova lista de veiculos:', novaLista);
           return novaLista;
@@ -106,10 +118,10 @@ export const deleteVeiculo = async (veiculoId, setRegistros) => {
   }
 };
 
-export const updateVeiculo = async (veiculoId, updatedData, navigation) => {
+export const updateVeiculo = async (automovelId, updatedData, navigation) => {
   try {
-    const response = await fetch(`${API_URL}${veiculoId}`, {
-      method: 'PUT',
+    const response = await fetch(`${API_URL}${automovelId}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
